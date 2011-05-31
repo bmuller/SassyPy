@@ -1,0 +1,10 @@
+The goal of SassyPy is enhanced handling of CSV files, to possibly include:
+  - Sorting large files
+  - Moving cursors to arbitrary lines
+  - Intelligent use of in-memory operations and parallelism where appropriate
+  - Merging files
+  - Metadata (not only names of columns, but line count, sort status...)
+  - Indexing
+  - SQL operations, via SQLite
+
+The inspiration comes from the SAS data step, but obviously is not wedded to it.
