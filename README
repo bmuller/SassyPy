@@ -8,3 +8,5 @@ The goal of SassyPy is enhanced handling of CSV files, to possibly include:
   - SQL operations, via SQLite
 
 The inspiration comes from the SAS data step, but obviously is not wedded to it.
+
+Tested under Ubuntu 10.10 64 bit, Python 2.6.6
