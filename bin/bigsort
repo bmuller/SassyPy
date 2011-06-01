@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+# based on Recipe 466302: Sorting big files the Python 2.4 way
+# by Nicolas Lehuen
+# Sorting Big Files the Python 2.6 Way
+# http://code.activestate.com/recipes/576755-sorting-big-files-the-python-26-way/
+# Licensed under the MIT License
+
+import os
+from tempfile import gettempdir
+from itertools import islice, cycle
+from collections import namedtuple
+import heapq
+import optparse
+
+from sassypy import sorting
+
+parser = optparse.OptionParser()
+parser.add_option(
+    '-b','--buffer',
+    dest='buffer_size',
+    type='int',default=32000,
+    help='''Size of the line buffer. The file to sort is
+    divided into chunks of that many lines. Default : 32,000 lines.'''
+    )
+parser.add_option(
+    '-k','--key',
+    dest='key',
+    help='''Python expression used to compute the key for each
+    line, "lambda line:" is prepended.\n
+    Example : -k "line[5:10]". By default, the whole line is the key.'''
+    )
+parser.add_option(
+    '-t','--tempdir',
+    dest='tempdirs',
+    action='append',
+    default=[],
+    help='''Temporary directory to use. You might get performance
+improvements if the temporary directory is not on the same physical
+disk than the input and output directories. You can even try
+providing multiples directories on differents physical disks.
+Use multiple -t options to do that.'''
+    )
+parser.add_option(
+    '-p','--psyco',
+    dest='psyco',
+    action='store_true',
+    default=False,
+    help='''Use Psyco.'''
+    )
+options,args = parser.parse_args()
+
+if options.key:
+    options.key = eval('lambda line : (%s)'%options.key)
+    
+if options.psyco:
+    import psyco
+    psyco.full()
+
+sorting.batch_sort(args[0],args[1],options.key,options.buffer_size,options.tempdirs)
